@@ -9,7 +9,7 @@ import readwrite as rw
 def firstTime():
     """Checks if this is the first time"""
     try:
-        data = rw.readJSONFile("stats")
+        data = rw.readJSONFile("stats.json")
         print ("Skipping startup ...")
         return False
     except:
@@ -25,7 +25,10 @@ def makeFiles():
     if not isExisting:
             os.makedirs(filepath)
     hours = []
-    stats = {}
+    stats = {"TotalSinceStart": 0,
+            "TotalThisSession": 0,
+            "BestDay":0
+            }
     rw.writeJSONFile("hours.json", hours)
     rw.writeJSONFile("stats.json", stats)
 

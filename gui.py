@@ -4,6 +4,7 @@ import wx
 
 import readwrite as rw
 from entry import Entry, storeEntry
+from stats import updateStats
 
 
 class MyFrame(wx.Frame):
@@ -22,8 +23,21 @@ class MyFrame(wx.Frame):
         self.entryList = wx.ListView(self)
         #make entries..
         entries = rw.readJSONFile("hours.json") # list
+        self.entryList.AppendColumn("date")
+        self.entryList.InsertColumn(1, "hours")
+        self.entryList.InsertColumn(2, "comments")
+
+        for entry in entries:
+            #entry: dict
+            posOfPrevious = self.entryList.InsertItem(self.entryList.GetItemCount(), str(entry["date"]))
+            self.entryList.SetItem(posOfPrevious, 1, str(entry["hour"]))
+            self.entryList.SetItem(posOfPrevious, 2, str(entry["comment"]))
+
+        self._addToSizer([self.entryList], vSizer)
+
 
         # button (to display popup to add more)
+
         addButton = wx.Button(self)
         addButton.SetLabelText("Add new")
         addButton.Bind(wx.EVT_BUTTON, self.makePopUp)
@@ -116,7 +130,12 @@ class MyFrame(wx.Frame):
             print("Adding submitted event..")
             #precede...
             self._updateInfoTextTo("Adding submitted info...")
-            storeEntry(entry)
+            storeEntry(entry) # from entry.py
+            updateStats(entry)
+
+            index = self.entryList.InsertItem(self.entryList.GetItemCount(), str(entry.date))
+            self.entryList.SetItem(index, 1, str(entry.hour))
+            self.entryList.SetItem(index, 2, entry.comment)
             self._updateInfoTextTo("Successfully added new entry..")
             pass
         else:

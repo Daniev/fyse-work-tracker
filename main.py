@@ -1,9 +1,15 @@
 """Main file of project fysehours
+------------------------------------------------------------------------
+linter: pyright
+single folder containing entry, gui, main, readwrite, startup, stats
 
+files are stored in a created files directory
+------------------------------------------------------------------------
 should track: hour, comment, date (from user) and then calculate hours and pay for:
-    this week, month, semester"""
+this week, month, semester
+------------------------------------------------------------------------
+"""
 
-# TODO date, gui (one page only)
 import wx
 
 import gui

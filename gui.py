@@ -3,8 +3,8 @@
 import wx
 
 import readwrite as rw
+import stats
 from entry import Entry, storeEntry
-from stats import updateStats
 
 
 class MyFrame(wx.Frame):
@@ -19,7 +19,6 @@ class MyFrame(wx.Frame):
         #if needed..
         hSizer = wx.BoxSizer(wx.HORIZONTAL) 
         
-        # showing stats
         self.entryList = wx.ListView(self)
         #make entries..
         entries = rw.readJSONFile("hours.json") # list
@@ -45,7 +44,9 @@ class MyFrame(wx.Frame):
         purgeButton.SetLabelText("Purge")
         purgeButton.Bind(wx.EVT_BUTTON, self.purgeList)
 
-        # Should be made unmutable
+        # show stats:
+
+        # TODO: Should be made unmutable
         self.InfoText = wx.TextCtrl(self)
         self.InfoText.SetValue("Here, info will appear...")
         elements = [addButton, purgeButton, self.InfoText]
@@ -82,10 +83,7 @@ class MyFrame(wx.Frame):
         self._addToSizer(comments, textSizer3)
 
         inputTexts = [textSizer1, textSizer2, textSizer3]
-        self._addToSizer(inputTexts, dialogSizer)
-
-
-        
+        self._addToSizer(inputTexts, dialogSizer) 
 
         # buttons
         buttonSizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -131,7 +129,7 @@ class MyFrame(wx.Frame):
             #precede...
             self._updateInfoTextTo("Adding submitted info...")
             storeEntry(entry) # from entry.py
-            updateStats(entry)
+            stats.updateStats(entry)
 
             index = self.entryList.InsertItem(self.entryList.GetItemCount(), str(entry.date))
             self.entryList.SetItem(index, 1, str(entry.hour))
@@ -150,7 +148,15 @@ class MyFrame(wx.Frame):
         return
 
     def purgeList(self, event):
-        print("Purgin list")
+        print("Purging list")
+        self.entryList.DeleteAllItems()
+        data = []
+        rw.writeJSONFile("hours.json", data)
+        print("Removing json data...")
+
+        print("Resetting totalSession stat...")
+        stats.ResetSession(0)
+        self._updateInfoTextTo("Purged list and updated stats...")
         return
 
     def updateListView(self, newEntry):

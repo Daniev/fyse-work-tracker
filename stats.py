@@ -20,8 +20,10 @@ def updateTotals(newNumber, stats):
     stats["TotalThisSession"] += newNumber
     return stats
 
-def ResetSession(newNumber, stats):
+def ResetSession(newNumber ):
+    stats = getExistingStats()
     stats["TotalThisSession"] = newNumber
+    rw.writeJSONFile("stats.json",stats)
 
 def checkBestDay(newNumber, stats):
     bestDay = stats["BestDay"]

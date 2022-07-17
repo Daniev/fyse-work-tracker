@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 linter: pyright
 single folder containing entry, gui, main, readwrite, startup, stats
+all logic is implemented in the gui through event functions triggered by gui buttons.
 
 files are stored in a created files directory
 ------------------------------------------------------------------------
@@ -13,22 +14,19 @@ this week, month, semester
 import wx
 
 import gui
-import readwrite as rw
 import startup as start
 
 
 def main():
-    if (start.firstTime()):
+    # make files at first run
+    if start.firstTime():
         start.makeFiles() 
-
-    print ("Fetching data...")
-    d_Hours = rw.readJSONFile("hours.json")
-    d_Stats = rw.readJSONFile("stats.json")
 
     print ("Initializing window...")
     app = wx.App()
     gui.MyFrame()
     app.MainLoop()
+
     print("Exiting program...")
 
 

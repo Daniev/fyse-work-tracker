@@ -2,6 +2,12 @@
 Program that allows user to track how much he works at his job
 in an easy way.
 
+TODO:
+- feat: payment calculator to stats
+- feat: display stats
+- fix: Clean up when done..
+
+
 * * *
 #GUI:
 ## Main Window

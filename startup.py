@@ -27,7 +27,9 @@ def makeFiles():
     hours = []
     stats = {"TotalSinceStart": 0,
             "TotalThisSession": 0,
-            "BestDay":0
+            "BestDay":0,
+            "PayTotal": 0,
+            "PayThisSession": 0
             }
     rw.writeJSONFile("hours.json", hours)
     rw.writeJSONFile("stats.json", stats)

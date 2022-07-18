@@ -3,7 +3,7 @@ Program that allows user to track how much he works at his job
 in an easy way.
 
 TODO:
-- feat: payment calculator to stats
+- feat: payment calculator to stats(DONE)
 - feat: display stats (DONE)
 - fix: Clean up when done..
 
@@ -37,7 +37,7 @@ In stats.json
     "TotalSinceStart": int,
     "TotalThisSession": int,
     "BestDay": int,
-    "payTotal": int,
-    "payThisSession": int
+    "PayTotal": int,
+    "PayThisSession": int
   }
 Data validation is done when making a entry class instance...

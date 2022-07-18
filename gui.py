@@ -135,7 +135,6 @@ class MyFrame(wx.Frame):
         comment = self.inputComment.GetValue()
         print("Checking validity...")
         entry = Entry(date, hour, comment)
-        # TODO store the entry...
 
         # if it passed the validity:
         if entry.allGood:
@@ -143,19 +142,30 @@ class MyFrame(wx.Frame):
             #precede...
             self._updateInfoTextTo("Adding submitted info...")
             storeEntry(entry) # from entry.py
-            stats.updateStats(entry)
+            allStats = stats.updateStats(entry)
+            self.refreshLists(entry, allStats)
 
-            index = self.entryList.InsertItem(self.entryList.GetItemCount(), str(entry.date))
-            self.entryList.SetItem(index, 1, str(entry.hour))
-            self.entryList.SetItem(index, 2, entry.comment)
+                 
             self._updateInfoTextTo("Successfully added new entry..")
-            pass
         else:
             print("Wrong Input! Try again...")
             self._updateInfoTextTo("Wrong input! Try again...")
         
         self.dialog.Destroy()
         return
+
+    def refreshLists(self, entry, allStats):
+            if entry:
+                index = self.entryList.InsertItem(self.entryList.GetItemCount(), str(entry.date))
+                self.entryList.SetItem(index, 1, str(entry.hour))
+                self.entryList.SetItem(index, 2, entry.comment)
+            
+            position = 0
+            for statCat in allStats:
+                 self.statsDisplay.SetItem(position , 1, str(allStats[statCat]))
+                 position += 1
+            return
+         
 
     def _updateInfoTextTo(self, newText):
         self.InfoText.SetValue(newText)
@@ -170,12 +180,6 @@ class MyFrame(wx.Frame):
 
         print("Resetting totalSession stat...")
         stats.ResetSession(0)
+        self.refreshLists(None, stats.getExistingStats())
         self._updateInfoTextTo("Purged list and updated stats...")
-        return
-
-    def updateListView(self, newEntry):
-        """Updates the listView by adding new data"""
-        # data = rw.readJSONFile("entry.json")
-        # append the newEntry to the list..
-        # dislplay it in the list...
         return

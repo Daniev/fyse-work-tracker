@@ -2,6 +2,10 @@
 import readwrite as rw
 
 
+def getStatNumber():
+    """Easy way to edit the number of stats if they should change.."""
+    return 5
+
 def getExistingStats():
         stats = rw.readJSONFile("stats.json") 
         return stats

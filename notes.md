@@ -4,7 +4,7 @@ in an easy way.
 
 TODO:
 - feat: payment calculator to stats
-- feat: display stats
+- feat: display stats (DONE)
 - fix: Clean up when done..
 
 
@@ -36,6 +36,8 @@ In stats.json
 {
     "TotalSinceStart": int,
     "TotalThisSession": int,
-    "BestDay": int
+    "BestDay": int,
+    "payTotal": int,
+    "payThisSession": int
   }
 Data validation is done when making a entry class instance...

@@ -7,9 +7,12 @@ import stats
 from entry import Entry, storeEntry
 
 
+def getWindowWidth():
+    return 800
+
 class MyFrame(wx.Frame):
     def __init__(self):
-        super().__init__(parent=None, title="fysehours", size= wx.Size(800,600))
+        super().__init__(parent=None, title="fysehours", size= wx.Size(getWindowWidth(),600))
         self.makeContent()
         self.Show()
         
@@ -19,12 +22,14 @@ class MyFrame(wx.Frame):
         #if needed..
         hSizer = wx.BoxSizer(wx.HORIZONTAL) 
         
+        entryHeading = wx.StaticText(self)
+        entryHeading.SetLabelText("Entries:")
         self.entryList = wx.ListView(self)
         #make entries..
         entries = rw.readJSONFile("hours.json") # list
-        self.entryList.AppendColumn("date")
-        self.entryList.InsertColumn(1, "hours")
-        self.entryList.InsertColumn(2, "comments")
+        self.entryList.AppendColumn("date", width=getWindowWidth() // 3)
+        self.entryList.InsertColumn(1, "hours", width=getWindowWidth() // 3)
+        self.entryList.InsertColumn(2, "comments", width=getWindowWidth() // 3)
 
         for entry in entries:
             #entry: dict
@@ -32,7 +37,7 @@ class MyFrame(wx.Frame):
             self.entryList.SetItem(posOfPrevious, 1, str(entry["hour"]))
             self.entryList.SetItem(posOfPrevious, 2, str(entry["comment"]))
 
-        self._addToSizer([self.entryList], vSizer)
+        self._addToSizer([entryHeading, self.entryList],vSizer)
 
 
         # button (to display popup to add more)
@@ -45,11 +50,21 @@ class MyFrame(wx.Frame):
         purgeButton.Bind(wx.EVT_BUTTON, self.purgeList)
 
         # show stats:
+        statHeading = wx.StaticText(self)
+        statHeading.SetLabelText("Statistics:")
+        self.statsDisplay = wx.ListView(self)
+        self.statsDisplay.AppendColumn("category", width=getWindowWidth() // 2 - 2) 
+        self.statsDisplay.InsertColumn(1, "value", width=getWindowWidth() // 2 - 2)
+        theStats = stats.getExistingStats()
+
+        for statElement in theStats:
+            index = self.statsDisplay.InsertItem(self.statsDisplay.GetItemCount(), statElement)
+            self.statsDisplay.SetItem(index, 1, str(theStats[statElement]))
 
         # TODO: Should be made unmutable
         self.InfoText = wx.TextCtrl(self)
         self.InfoText.SetValue("Here, info will appear...")
-        elements = [addButton, purgeButton, self.InfoText]
+        elements = [addButton, purgeButton,statHeading, self.statsDisplay, self.InfoText]
         self._addToSizer(elements, vSizer)
 
         self.SetSizer(vSizer)
@@ -60,7 +75,6 @@ class MyFrame(wx.Frame):
         self.dialog = wx.Dialog(self, size=wx.Size(400,400))
         dialogSizer = wx.BoxSizer(wx.VERTICAL)
 
-        #Textctrls?
         textSizer1 = wx.BoxSizer(wx.HORIZONTAL)
         dateInfo = wx.StaticText(self.dialog)
         dateInfo.SetLabelText("Input date: 1-31")
@@ -107,7 +121,7 @@ class MyFrame(wx.Frame):
     def _addToSizer(self,elements, sizer):
         """Adds provided element to provided sizer."""
         for element in elements:
-            sizer.Add(element, flag=wx.ALL | wx.EXPAND, border=8)   
+            sizer.Add(element, flag=wx.ALL | wx.EXPAND | wx.LEFT |wx.CENTER, border=8)   
         return
 
     def exitDialog(self, event):

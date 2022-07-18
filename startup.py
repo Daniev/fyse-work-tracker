@@ -1,9 +1,8 @@
 # Startup script
+"""makes the files necessary to run the program at startup """
 import os
 
 import readwrite as rw
-
-"""makes files necessary to run at startup first time """
 
 
 def firstTime():

@@ -1,4 +1,9 @@
-"""GUI makes the gui"""
+"""GUI
+_____________________________________________
+Main portion of the program... Makes a window
+and a dialog and triggers all functionality..
+---------------------------------------------
+"""
 
 import wx
 
@@ -12,7 +17,8 @@ def getWindowWidth():
 
 class MyFrame(wx.Frame):
     def __init__(self):
-        super().__init__(parent=None, title="fysehours", size= wx.Size(getWindowWidth(),600))
+        super().__init__(parent=None, title="fysehours",
+                size= wx.Size(getWindowWidth(),600))
         self.makeContent()
         self.Show()
         
@@ -22,15 +28,18 @@ class MyFrame(wx.Frame):
         #if needed..
         hSizer = wx.BoxSizer(wx.HORIZONTAL) 
         
+        # make entriesDisplay
         entryHeading = wx.StaticText(self)
         entryHeading.SetLabelText("Entries:")
         self.entryList = wx.ListView(self)
-        #make entries..
-        entries = rw.readJSONFile("hours.json") # list
-        self.entryList.AppendColumn("date", width=getWindowWidth() // 3)
-        self.entryList.InsertColumn(1, "hours", width=getWindowWidth() // 3)
-        self.entryList.InsertColumn(2, "comments", width=getWindowWidth() // 3)
+        self.entryList.AppendColumn("date",
+                width=getWindowWidth() // 3 - 2)
+        self.entryList.InsertColumn(1, "hours",
+                width=getWindowWidth() // 3 - 2)
+        self.entryList.InsertColumn(2, "comments", 
+                width=getWindowWidth() // 3 - 2) # -2 to not exceed window borders..
 
+        entries = rw.readJSONFile("hours.json") # type: list
         for entry in entries:
             #entry: dict
             posOfPrevious = self.entryList.InsertItem(self.entryList.GetItemCount(), str(entry["date"]))
@@ -38,8 +47,6 @@ class MyFrame(wx.Frame):
             self.entryList.SetItem(posOfPrevious, 2, str(entry["comment"]))
 
         self._addToSizer([entryHeading, self.entryList],vSizer)
-
-
         # button (to display popup to add more)
 
         addButton = wx.Button(self)

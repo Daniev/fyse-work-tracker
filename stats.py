@@ -2,10 +2,11 @@
 import readwrite as rw
 
 
-def getPayRate():
+def PAYRATE():
+    """Constants used throughout"""
     return 170
 
-def getStatNumber():
+def STATNUMBER():
     """Easy way to edit the number of stats if they should change.."""
     return 5
 
@@ -24,7 +25,7 @@ def updateStats(entry):
 
 
 def updateTotals(newNumber, stats):
-    payRate = getPayRate()
+    payRate = PAYRATE()
     stats["TotalSinceStart"] += newNumber
     stats["TotalThisSession"] += newNumber
     stats["PayTotal"] += newNumber * payRate
@@ -32,7 +33,7 @@ def updateTotals(newNumber, stats):
     return stats
 
 def ResetSession(newNumber ):
-    payRate = getPayRate()
+    payRate = PAYRATE()
     stats = getExistingStats()
     stats["TotalThisSession"] = newNumber
     stats["PayThisSession"] = newNumber * payRate
